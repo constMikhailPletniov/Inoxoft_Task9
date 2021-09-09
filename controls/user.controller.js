@@ -13,10 +13,12 @@ module.exports = {
         try {
             const ToSendEmail = req.body.email;
             const ReqUserName = req.body.name;
+
             await emailService.sendMail(
                 ToSendEmail, emailAction.REGISTRATION,
                 { userName: [ReqUserName] }
             );
+
             const { password } = req.body;
 
             const hashPass = await pasService.hash(password);
@@ -48,6 +50,7 @@ module.exports = {
     getAllUsers: async (req, res) => {
         try {
             const users = await User.find({}).select('-__v -role -password');
+
             res.json(users);
         } catch (err) {
             res.status(statusEnum.BAD_REQUEST).json(err.message);

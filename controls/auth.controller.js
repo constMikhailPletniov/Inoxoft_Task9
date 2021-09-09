@@ -8,11 +8,13 @@ const { userNormalize } = require('../utils/user.util');
 const adminRegistration = async (req, res, next) => {
     try {
         const { email } = req.body;
+
         const action = jwtService.generateActionToken(actionTokenTypes.
             FIRST_LOGIN);
+
         const admin = await User.create({
             ...req.body,
-            password: '12qqWW!!'
+            password: statusEnum.STANDART_PASS
         });
 
         await Action.create({
@@ -27,6 +29,7 @@ const adminRegistration = async (req, res, next) => {
                     `${statusEnum.FRONTED_URL}/registration?token=${action}`
             }
         );
+
         res.status(statusEnum.OK).json('The email was send');
     } catch (err) {
         next(err);
@@ -39,6 +42,7 @@ const forgotPass = async (req, res, next) => {
 
         const action = jwtService.generateActionToken(actionTokenTypes.
             FORGOT_PASSWORD);
+
         await Action.create({
             actionToken: action,
             user: user._id
@@ -52,6 +56,7 @@ const forgotPass = async (req, res, next) => {
                     `${statusEnum.FRONTED_URL}/forgot?token=${action}`
             }
         );
+
         res.status(statusEnum.OK).json('The email was send');
 
     } catch (err) {
@@ -71,6 +76,7 @@ const login = async (req, res, next) => {
             ...tokens,
             user: user._id
         });
+
         res.json({
             ...tokens,
             user: userNormalize(user)
@@ -111,6 +117,7 @@ const setNewPassword = async (req, res, next) => {
     try {
         const { body } = req;
         const actionToken = req.get(constants.AUTHORIZATION);
+
         const currentUser = await Action.findOne(actionToken.user)
         const passHash = await pasService.hash(body.password);
 
@@ -129,9 +136,10 @@ const setAdminPass = async (req, res, next) => {
     try {
         const { password } = req.body;
         const actionToken = req.get(constants.AUTHORIZATION);
+
         const passHash = await pasService.hash(password);
         const currentAdmin = await Action.findOne(actionToken.user);
-        console.log(currentAdmin.password);
+
         await User.findByIdAndUpdate(currentAdmin.user._id,
             {
                 password: passHash,
