@@ -24,6 +24,7 @@ router.post(
     authMiddleWare.checkActionToken(actionTokenTypes.FORGOT_PASSWORD),
     authControl.setNewPassword
 );
+
 router.post(
     '/regAdmin/send',
     authControl.adminRegistration

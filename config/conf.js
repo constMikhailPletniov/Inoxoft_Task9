@@ -22,7 +22,8 @@ module.exports = {
     PORT: process.env.PORT || 5001,
     REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || 'refresh',
     SALT: 7,
-    STANDART_PASS: process.env.STANDART_PASS || '12345'
+    SUPER_ADMIN_NAME: process.env.SUPER_ADMIN_NAME || 'Misha',
+    STANDART_PASS: process.env.STANDART_PASS || '12345',
     UNAUTHORIZED: 401,
     ZERO: 0
 }

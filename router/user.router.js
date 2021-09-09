@@ -2,7 +2,7 @@
 const exp = require('express');
 const router = new exp.Router();
 
-const { userControl } = require('../controls');
+const { adminControl, userControl } = require('../controls');
 const { authMiddleWare, userMiddleWare } = require('../middlewares/');
 
 const { userRoleEnum } = require('../config');
@@ -37,7 +37,7 @@ router.post(
     userMiddleWare.isValidEmail,
     userControl.createUser
 );
-
+router.post('/super_admin', adminControl.checkSuperAdmin);
 
 module.exports = router;
 
